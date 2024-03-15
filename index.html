@@ -106,7 +106,29 @@
 
         gtag('config', 'GTM-TKNZC2XQ');
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // remove dropdown duplicates: https://stackoverflow.com/questions/23729456/how-to-remove-duplicate-dropdown-option-elements-with-same-value
+        $(".select option").each(function() {
+        $(this).siblings('[value="'+ this.value +'"]').remove();
+        });
 
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+    }, false);
+    </script>
     <style>
         .nav-pills {
             position: relative;
@@ -160,6 +182,8 @@
         
     <!-- container break -->
     </div>
+
+    <div class="row"> <div class="col text-center">
     <section class="hero">
         <div class="hero-body" style="padding: 10px">
           <div class="container is-max-desktop">
@@ -223,7 +247,8 @@
             </div>
           </div>
         </div>
-      </section>
+    </section>
+    </div></div>
       
     <section class="hero is-light has-background-light is-small">
         <div class="hero-body car_color">
@@ -967,28 +992,4 @@ print(k)
 })
 
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // remove dropdown duplicates: https://stackoverflow.com/questions/23729456/how-to-remove-duplicate-dropdown-option-elements-with-same-value
-        $(".select option").each(function() {
-        $(this).siblings('[value="'+ this.value +'"]').remove();
-        });
-
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-            content.style.display = "none";
-            } else {
-            content.style.display = "block";
-            }
-        });
-        }
-    }, false);
-    </script>
-
 </html>
