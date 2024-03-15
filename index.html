@@ -67,7 +67,7 @@
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
-  <!-- <link rel="stylesheet" href="./static/css/bulma.min.css"> -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
@@ -93,7 +93,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>hljs.highlightAll();</script>
 
   
@@ -122,11 +121,12 @@
     </style>
 </head>
 
-<body onload="updateSingleVideo(); updateQpredVideo();">
+<body>
     <div class="container" id="main">
         <div class="row">
             <h2 class="col-md-12 text-center">
-                <strong> <font size="+4">DeliGrasp: </font> </strong>
+                <strong><span style="font-variant: small-caps;"><font size="+4">DeliGrasp: </font></span>
+                </strong>
                 <strong>
                     <font size="+4">Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies</font>
                 </strong>
@@ -158,78 +158,123 @@
             </div>
         </div>
         
-        <div class="row">
-            <div class="col-md-12 text-center">                
-                <a href="mailto:wixi6454@colorado.edu"><i class="fa fa-envelope"></i></a> Corresponding Author
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-md-1 text-center px-0">
-                <a href="assets/dg.pdf">
-                    <image src="img/paper_preview.png" height="60px">
-                        <h4><strong>Paper</strong></h4>
-                </a>
-            </div>
-            <div class="col-md-1 text-center px-0">
-                <a href="https://arxiv.org/abs/2403.07832">
-                    <image src="img/arxiv_icon.png" height="60px">
-                        <h4><strong>arXiv</strong></h4>
-                </a>
-            </div>
-            <div class="col-md-1 text-center px-0">
-                <a href="https://youtu.be/7KiKg0rdSSQ">
-                    <image src="img/youtube_icon.png" height="60px">
-                        <h4><strong>Video</strong></h4>
-                </a>
-            </div>
-            <div class="col-md-1 text-center px-0">
-                <a href="https://github.com/correlllab/MAGPIE/tree/open-grasp">
-                    <image src="img/github.png" height="60px">
-                        <h4><strong>Code</strong></h4>
+    <!-- container break -->
+    </div>
+    <section class="hero">
+        <div class="hero-body" style="padding: 10px">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="publication-links">
+                    <!-- PDF Link. -->
+                    <span class="link-block">
+                        <a target="_blank" href="assets/dg.pdf"
+                           class="external-link button is-normal is-rounded is-dark">
+                          <span class="icon">
+                              <i class="fas fa-file-pdf"></i>
+                          </span>
+                          <span>Paper</span>
+                        </a>
+                      </span>
+
+                    <!-- arXiv Link. -->
+                    <span class="link-block">
+                      <a target="_blank" href="https://arxiv.org/abs/2209.11302"
+                         class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="ai ai-arxiv"></i>
+                        </span>
+                        <span>arXiv</span>
+                      </a>
+                    </span>
+      
+                  <!-- Video Link. -->
+                  <!-- <span class="link-block">
+                    <a target="_blank" href=""
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fab fa-youtube"></i>
+                      </span>
+                      <span>Video</span>
                     </a>
+                  </span> -->
+      
+                  <!-- Code Link. -->
+                  <span class="link-block">
+                    <a target="_blank" href="https://github.com/correlllab/MAGPIE/tree/open-grasp"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                      </a>
+                  </span>
+      
+                  <!-- FAQ Link. -->
+                  <span class="link-block">
+                    <a href="#faqs"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                          <i class="fas fa-question"></i>
+                      </span>
+                      <span>FAQs</span>
+                      </a>
+                  </span>  
+                </div>
             </div>
-            <div class="col-4"></div>
-
-        </div>   
-
-        <section class="hero is-light has-background-light is-small car_color">
-            <div class="hero-body car_color">
-                <div class="container has-text-centered">
-                <div id="results-carousel" class="carousel results-carousel">
-                    <div class="item item-steve">
-                    <h4 class="title is-6">Pick up the avocado</h4>
-                    <video poster="" id="steve" autoplay muted loop playsinline height="50%">
-                        <source src="videos/10_avocado.mp4"
-                                type="video/mp4" height="20%">
-                    </video>
-                    </div>
-                    <div class="item item-coffee">
-                    <h4 class="title is-6">Sort fruits in the plate and bottle in the box</h4>
-                    <video poster="" id="coffee" autoplay muted loop playsinline height="50%">
-                        <source src="videos/10_avocado.mp4"
-                                type="video/mp4">
-                    </video>
-                    </div>
-                    <div class="item item-blueshirt">
-                    <h4 class="title is-6">Put salmon in the fridge</h4>
-                    <video poster="" id="blueshirt" autoplay muted loop playsinline height="50%">
-                        <source src="videos/10_avocado.mp4"
-                                type="video/mp4">
-                    </video>
-                    </div>
-                    <div class="item item-mask">
-                    <h4 class="title is-6">Throw away apple</h4>
-                    <video poster="" id="mask" autoplay muted loop playsinline height="50%">
-                        <source src="videos/10_avocado.mp4"
-                                type="video/mp4">
-                    </video>
-                    </div>
+          </div>
+        </div>
+      </section>
+      
+    <section class="hero is-light has-background-light is-small">
+        <div class="hero-body car_color">
+            <div class="container has-text-centered">
+            <div id="results-carousel" class="carousel results-carousel">
+                <div class="item item-steve">
+                <h4 class="title is-3">Pick up the avocado</h4>
+                <video width="50%" height="50%" poster="" id="steve" autoplay muted loop playsinline>
+                    <source src="videos/10_avocado.mp4"
+                            type="video/mp4">
+                </video>
                 </div>
+                <div class="item item-coffee">
+                <h4 class="title is-3">Pick up a raspberry</h4>
+                <video width="50%" height="50%" poster="" id="coffee" autoplay muted loop playsinline>
+                    <source src="videos/04_raspberry.mp4"
+                            type="video/mp4">
+                </video>
                 </div>
-            </div>  
-        </section>
+                <div class="item item-blueshirt">
+                <h4 class="title is-3">Pick up an egg.</h4>
+                <video width="50%" height="50%" poster="" id="blueshirt" autoplay muted loop playsinline>
+                    <source src="videos/4fun/egg.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a potato chip.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                    <source src="videos/4fun/chip.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a pastry.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                        <source src="videos/4fun/pastry.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a paper airplane.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                        <source src="videos/01_plane.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            </div>
+        </div>  
+    </section>
 <!-- coming soon
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -247,7 +292,7 @@
             </div>
         </div>
  -->
-
+    <div class="container">
         <div class="row">
             <div class="col-2"></div>
             <div class="col-md-8">
@@ -277,7 +322,6 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-md-8">
-                <br>
                 <h3>
                     Approach Overview
                 </h3>
@@ -293,7 +337,7 @@
                     and “placing” are straightforward tasks, and cannot acount for
                     contact-rich manipulation tasks, such as
                     grasping a paper airplane, deformable plastic
-                    bags dry noodles, or ripe produce. <br>
+                    bags dry noodles, or ripe produce. <br><br>
                     In this work, we propose DeliGrasp, which leverages LLMs' to manipulation skills
                     for these kinds of delicate and deformable objects. Our system 
                     common-sense physical reasoning 
@@ -312,51 +356,48 @@
             <div class="col-2"></div>
             <div class="col-md-8">
                 <h3>
-                    Adaptive Grasping with Slip Detection
+                    Adaptive Grasp Policies
                 </h3>
                 <p style="text-align:center;">
                     <image src="img/fbd.png" class="img-responsive w-50">
                 </p>
                 <p class="text-justify">
-                    We build the Reward Translator based on LLMs to map user interactions to reward functions
-                    corresponding to the desired robot motion.
-                    As reward tuning is highly domain-specific and requires expert knowledge, it is unsurprising that
-                    LLMs trained on generic language datasets
-                    cannot directly generate a reward for a specific hardware. Instead, we explore the in-context
-                    learning ability of LLMs to achieve this goal.
-                    <br>
-                    More concretely, we decompose the problem of language to reward into two stages: motion description
-                    and reward coding. During motion description stage,
-                    we design a prompt to instruct an LLM to interpret and expand the user input into a natural language
-                    description of the desired robot motion following a pre-defined template.
-                    While during the reward coding stage, we use another prompt to instruct the LLM to translate the
-                    motion description into reward specifying code.
-                </p>
-            </div>
-            <div class="col-2"></div>
-        </div>
+                    The minimum grasp force required to pick an object up is
+                    bounded between object slip acceleration and gripper upwards acceleration (2.5 m/s<sup>2</sup> for the UR5 robot arm), 
+                    given an object's mass, m, and friction coefficient, µ.
+                    <p style="text-align:center;">
+                        <image src="img/bounds.png" class="img-responsive w-50">
+                    </p>
 
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <h3>
-                    Generating Grasp Policies
-                </h3>
+                    Assuming a highly capable reasoning agent can estimate these two values,
+                    we can define a closed-loop controller to achieve a minimally-deforming grasp:
+                    increasing gripper output force F<sub>out</sub> and decreasing gripper
+                    aperture <i>x</i> until sensing a contact force F<sub>c</sub> greater than
+                    the target F<sub>min</sub>. To determine the gain terms, ∆F<sub>out</sub>
+                    and ∆<i>x</i>, i.e. how fast we close the gripper and ratchet up
+                    force, the controller utilizes an agent-determined k and ∆x to
+                    compute ∆F<sub>out</sub> = <i>c</i> · <i>k</i>∆<i>x</i> (manual dampening
+                    constant <i>c</i> = 0.1).
+                </p>
+
+
 
                 <p class="text-justify">
-                    The Motion Controller needs to map the reward function generated by the Reward Translatorto
-                    low-level robot actions that maximize the accumulated reward specified by the Reward Translator.
-                    There are a few possible ways to achieve this, including using reinforcement learning (RL), offline
-                    trajectory optimization, or, as in this work, receding horizon trajectory optimization, i.e., model
-                    predictive control (MPC).
-                    Specifically, we use an open-source implementation based on the MuJoCo simulator, MJPC.
-                    At each control step, MJPC plans a sequence of optimized actions and sends to the robot. The robot
-                    applies the action corresponding to its current timestamp, advances to the next step, and sends the
-                    updated robot states to the MJPC planner to initiate the next planning cycle.
-                    The frequent re-planning in MPC empowers its robustness to uncertainties in the system and,
-                    importantly, enables interactive motion synthesis and correction.
+                    We task an LLM (GPT-4) with predicting these quantities for an arbitrary object. 
+                    To generate grasp policies, we leverage a
+                    dual-prompt structure similar to that of Language to Rewards, 
+                    with an initial grasp “descriptor” prompt which estimates
+                    object characteristics and special accommodations, if needed, from
+                    the input object description. The “descriptor” prompt produces a 
+                    structured description, which the subsequent “coder”
+                    prompt translates into an executable Python grasp policy that
+                    modulates gripper compliance, force, and aperture according
+                    to Alg. 1. 
                 </p>
             </div>
+            <div class="col-md-2"></div>
         </div>
+
 
         <div class="row" id="demo">
             <div class="col-md-2"></div>
@@ -366,11 +407,10 @@
                 </h3>
                 <p>
                 <p class="text-justify">
-                    We evaluate our approach on two simulated robotic systems: a quadruped robot, and a dexterous robot
-                    manipulator.
-                    We design a diverse set of tasks for each robot to demonstrate the capability of our proposed
-                    system. Some examples of the resulting
-                    robot motions can be found below.
+We test <span class="dprogprompt">DeliGrasp</span> on a UR5 robot
+arm and a MAGPIE gripper looking top-down on a table
+with a palm-integrated Intel RealSense D-405 camera against
+a dataset of 12 delicate and deformable objects. Some examples of the resulting grasps are shown below, in realtime.
                 </p>
                 </p>
                 <br>
@@ -682,6 +722,7 @@ print(k)
 ## k: 6192. N/m" onclick="populateDemo(this);">
                     </div>
                 </div>
+                
             </div>
             <div class="col-2"></div>
         </div>
@@ -691,57 +732,133 @@ print(k)
             <div class="col-2"></div>
             <div class="col-md-8">
                 <p class="text-justify">
-                    We further compare our method against two baselines: 1) a Reward Coder only baseline
-                    where an LLM directly map user instructions to reward code instead of going through the Motion
-                    Descriptor, and 2) a Code-as-Policies baseline
-                    where the LLM generates a plan for the robot motion using a set of pre-defined robot primitive
-                    skills instead of reward functions.
-                    For the Code-as-Policies (CaP) baseline, we design the primitive skills based on common commands
-                    available to the robot.
+                    We also compare our method against 3 baselines: 1) a direct estimation baseline
+                    in which <span class="dprogprompt">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain
+                    2) a perception-informed baseline, where the gripper closes to an visually-determined object device-width
+                    3) a traditional force-limited baseline, where the gripper closes until it cannot output any more force (set to 4 N)
                     <br>
-                    As shown below, our proposed approach achieves notably higher success rate for 11/17 task
-                    categories and comparable performance for the rest tasks,
-                    showing the effectiveness and reliability of the proposed method.
+                    <br>
+                    As shown below, <span class="dprogprompt">DeliGrasp</span> outperforms the baselines on 8/12 objects. 
+                    Where force-limited grasps deform objects, and visually-informed grasps slip, <span class="dprogprompt">DeliGrasp</span> 
+                    is successfully picks up objects with minimal deformation. While the direct estimation baseline is closer in performance, 
+                    we observe higher volatility in estimated parameters, due to a lack 
+                    of common-sense physical grounding, and thus, lower reliability and interpretability.
                 </p>
             </div>
             <div class="col-2"></div>
         </div>
 
         <div class="row">
-            <div class="col-2"></div>
+            <div class="col-md-2"></div>
             <div class="col-md-8 text-center px-0">
                     <image width="100%" src="img/deli_data.png" class="img-responsive">
             </div>
-            <div class="col-2"></div>
+            <div class="col-md-2"></div>
 
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
 
                 <p class="text-justify">
-                    We further showcase two examples where we teach the robot to perform complex tasks through
-                    multiple rounds of interactions.
+                    We also show how the compliance feedback from <span class="dprogprompt">DeliGrasp</span> 
+                    policies enables downstream tasks such as measuring produce ripeness.
                 </p>
             </div>
+            <div class="col-md-2"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-8" id="faqs">
+                <h3>
+                      FAQs
+                  </h3>
+                <p class="text-justify">
+                    <p><b>
+                        How does this differ from Language to Rewards and Code as Policies?
+                         </b></p>  <p>
+                        <span class="dprogprompt">DeliGrasp</span>'s primary function is the
+                        estimation of object mass, friction, and compliance, and modulating the computed 
+                        grasp force depending on the high-level task description. We pair it with an
+                        adaptive grasping algorithm which is inspired by first principles and tailored for these
+                        estimated characteristics. <span class="dprogprompt">DeliGrasp</span> parameterizes
+                        low-level contact rich manipulation, rather than directly design low-level motion
+                        with reward functions or pre-defined robot primitive skills.
+                    </p>
+
+                    </p> <p><b>
+                        How does the controller compare to a classic adaptive grasping methods?
+                    </b></p>  <p>
+                    <ol>
+                        <li> Classical methods are often customized for specific gripper hardware or suites of sensors, whereas ours can be adapted to any current-controllable end-effector. </li>
+                        <li> Our algorithm is a simple closed-loop feedforward controller because it relies on LLM-estimated terms which reduce controller complexity.</li>
+                        <li> Many methods employ in-motion slip detection, which <span class="dprogprompt">DeliGrasp</span> is not capable of.</li>
+                    </ol>
+                    </p>
+
+                    </p> <p><b>
+                        Can <span class="dprogprompt">DeliGrasp</span> pick up deli meats?
+                    </b></p>  <p>
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="collapsible">Ironically, not really (click for video).</button>
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col text-center">
+                                            <video width="25%" height="25%"  autoplay muted loop playsinline>
+                                                <source src="videos/4fun/pastrami_fail.mp4" type="video/mp4">
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>      
+                            </div>
+                          </div>
+                    </p>
+
+                </p> <p><b>
+                    That's not really a robot at all, is it? I smell something real avian going on.
+                </b></p>  <p>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="collapsible">Click for the truth (REAL).</button>
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        Rock n' roll... <br>
+                                        <img src="img/deligrasp.png" width="50%">
+                                    </div>
+                                </div>
+                            </div>      
+                        </div>
+                      </div>
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+
+
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 <h3>
                       Prompts
                   </h3>
                 <p class="text-justify">
-                    Deligrasp: 
+                    <span class="dprogprompt">DeliGrasp</span>: 
                     <a href="./assets/prompts/dg_descriptor.txt">Grasp Descriptor</a> |
                     <a href="./assets/prompts/dg_coder.txt">Grasp Coder</a>
                 </p>
             </div>
+            <div class="col-md-2"></div>
           </div>
 
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 <h3>
                     BibTeX Citation
                 </h3>
@@ -755,19 +872,21 @@ print(k)
 } </textarea>
                 </div>
             </div>
-
+            <div class="col-md-2"></div>
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
                 <h3>
                     Acknowledgements
                 </h3>
                 <p class="text-justify">
                     The authors would like to thank Eric Xue, Enora Rice, Shivendra Agrawal, and James Watson for their feedback and support. <br><br>
-                    The website template was borrowed from <a href="https://language-to-reward.github.io/">Language to Rewards</a>.
+                    The website template was borrowed from <a href="https://language-to-reward.github.io/">Language to Rewards</a> and <a href="https://progprompt.github.io">ProgPrompt</a>.
                 </p>
             </div>
+            <div class="col-md-2"></div>
         </div>
     </div>
 </body>
@@ -848,5 +967,28 @@ print(k)
 })
 
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // remove dropdown duplicates: https://stackoverflow.com/questions/23729456/how-to-remove-duplicate-dropdown-option-elements-with-same-value
+        $(".select option").each(function() {
+        $(this).siblings('[value="'+ this.value +'"]').remove();
+        });
+
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+            content.style.display = "none";
+            } else {
+            content.style.display = "block";
+            }
+        });
+        }
+    }, false);
+    </script>
 
 </html>
