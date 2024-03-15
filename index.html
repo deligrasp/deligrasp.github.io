@@ -250,56 +250,6 @@
     </section>
     </div></div>
       
-    <section class="hero is-light has-background-light is-small">
-        <div class="hero-body car_color">
-            <div class="container has-text-centered">
-            <div id="results-carousel" class="carousel results-carousel">
-                <div class="item item-steve">
-                <h4 class="title is-3">Pick up the avocado</h4>
-                <video width="50%" height="50%" poster="" id="steve" autoplay muted loop playsinline>
-                    <source src="videos/10_avocado.mp4"
-                            type="video/mp4">
-                </video>
-                </div>
-                <div class="item item-coffee">
-                <h4 class="title is-3">Pick up a raspberry</h4>
-                <video width="50%" height="50%" poster="" id="coffee" autoplay muted loop playsinline>
-                    <source src="videos/04_raspberry.mp4"
-                            type="video/mp4">
-                </video>
-                </div>
-                <div class="item item-blueshirt">
-                <h4 class="title is-3">Pick up an egg.</h4>
-                <video width="50%" height="50%" poster="" id="blueshirt" autoplay muted loop playsinline>
-                    <source src="videos/4fun/egg.mp4"
-                            type="video/mp4">
-                </video>
-                </div>
-                <div class="item item-mask">
-                <h4 class="title is-3">Pick up a potato chip.</h4>
-                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
-                    <source src="videos/4fun/chip.mp4"
-                            type="video/mp4">
-                </video>
-                </div>
-                <div class="item item-mask">
-                <h4 class="title is-3">Pick up a pastry.</h4>
-                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
-                        <source src="videos/4fun/pastry.mp4"
-                                type="video/mp4">
-                    </video>
-                </div>
-                <div class="item item-mask">
-                <h4 class="title is-3">Pick up a paper airplane.</h4>
-                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
-                        <source src="videos/01_plane.mp4"
-                                type="video/mp4">
-                    </video>
-                </div>
-            </div>
-            </div>
-        </div>  
-    </section>
 <!-- coming soon
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -316,133 +266,15 @@
                 </div>
             </div>
         </div>
- -->
-    <div class="container">
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-8">
-                <h3>
-                    Abstract
-                </h3>
-                <p class="text-justify">
-                    Large language models (LLMs) can provide rich
-                    physical descriptions of most worldly objects, allowing robots
-                    to achieve more informed and capable grasping. We leverage
-                    LLMs' common sense physical reasoning and code-writing
-                    abilities to infer an object's physical characteristics—mass m,
-                    friction coefficient µ, and spring constant k—from a semantic
-                    description, and then translate those characteristics into an
-                    executable adaptive grasp policy. Using a current-controllable,
-                    two-finger gripper with a built-in depth camera, we demonstrate that LLM-generated, physically-grounded grasp policies
-                    outperform traditional grasp policies on a custom benchmark of
-                    12 delicate and deformable items including food, produce, toys,
-                    and other everyday items, spanning two orders of magnitude
-                    in mass and required pick-up force. We also demonstrate how
-                    compliance feedback from DeliGrasp policies can aid in downstream tasks such as measuring produce ripeness.
-                </p>
-            </div>
-            <div class="col-2"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-8">
-                <h3>
-                    Approach Overview
-                </h3>
-                <p style="text-align:center;">
-                    <image src="img/dg_overview.png" class="img-responsive">
-                </p>
-                <p class="text-justify">
-                    Large language models (LLMs) are able to supervise robot
-                    control in manipulation across high-level step-by-step
-                    task planning, low-level motion planning, and determining 
-                    grasp positions conditioned on a given object's 
-                    semantic properties. These methods inherently assume that the acts of “picking”
-                    and “placing” are straightforward tasks, and cannot acount for
-                    contact-rich manipulation tasks, such as
-                    grasping a paper airplane, deformable plastic
-                    bags dry noodles, or ripe produce. <br><br>
-                    In this work, we propose DeliGrasp, which leverages LLMs' to manipulation skills
-                    for these kinds of delicate and deformable objects. Our system 
-                    common-sense physical reasoning 
-                    and code-writing abilities to infer the physical characteristics of gripper-object interactions, 
-                    including mass, spring constant, and friction. We formulate an adaptive grasp controller
-                    with slip detection derived from the inferred characteristics,
-                    endowing LLMs embodied with any current-controllable
-                    gripper with adaptive, open-world grasp skills for objects
-                    spanning a range of weight, size, fragility, and compliance.
-                </p>
-            </div>
-            <div class="col-2"></div>
-
-        </div>
-        <div class="row">
-            <div class="col-2"></div>
-            <div class="col-md-8">
-                <h3>
-                    Adaptive Grasp Policies
-                </h3>
-                <p style="text-align:center;">
-                    <image src="img/fbd.png" class="img-responsive w-50">
-                </p>
-                <p class="text-justify">
-                    The minimum grasp force required to pick an object up is
-                    bounded between object slip acceleration and gripper upwards acceleration (2.5 m/s<sup>2</sup> for the UR5 robot arm), 
-                    given an object's mass, m, and friction coefficient, µ.
-                    <p style="text-align:center;">
-                        <image src="img/bounds.png" class="img-responsive w-50">
-                    </p>
-
-                    Assuming a highly capable reasoning agent can estimate these two values,
-                    we can define a closed-loop controller to achieve a minimally-deforming grasp:
-                    increasing gripper output force F<sub>out</sub> and decreasing gripper
-                    aperture <i>x</i> until sensing a contact force F<sub>c</sub> greater than
-                    the target F<sub>min</sub>. To determine the gain terms, ∆F<sub>out</sub>
-                    and ∆<i>x</i>, i.e. how fast we close the gripper and ratchet up
-                    force, the controller utilizes an agent-determined k and ∆x to
-                    compute ∆F<sub>out</sub> = <i>c</i> · <i>k</i>∆<i>x</i> (manual dampening
-                    constant <i>c</i> = 0.1).
-                </p>
-
-
-
-                <p class="text-justify">
-                    We task an LLM (GPT-4) with predicting these quantities for an arbitrary object. 
-                    To generate grasp policies, we leverage a
-                    dual-prompt structure similar to that of Language to Rewards, 
-                    with an initial grasp “descriptor” prompt which estimates
-                    object characteristics and special accommodations, if needed, from
-                    the input object description. The “descriptor” prompt produces a 
-                    structured description, which the subsequent “coder”
-                    prompt translates into an executable Python grasp policy that
-                    modulates gripper compliance, force, and aperture according
-                    to Alg. 1. 
-                </p>
-            </div>
-            <div class="col-md-2"></div>
-        </div>
-
-
-        <div class="row" id="demo">
-            <div class="col-md-2"></div>
-            <div class="col-md-8 col-xs-12">
-                <h3>
-                    Results
-                </h3>
-                <p>
-                <p class="text-justify">
-We test <span class="dprogprompt">DeliGrasp</span> on a UR5 robot
-arm and a MAGPIE gripper looking top-down on a table
-with a palm-integrated Intel RealSense D-405 camera against
-a dataset of 12 delicate and deformable objects. Some examples of the resulting grasps are shown below, in realtime.
-                </p>
-                </p>
-                <br>
-                <div class="row">
-                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
-                        <img src="videos/01_plane.png" width="100%"
-                            alt=" User instruction: Pick up the paper airplane. 
+-->
+<div class="container">
+<div class="row" id="demo">
+<div class="col-md-1"></div>
+<div class="col-md-10 col-xs-12">
+<div class="row">
+    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+        <img src="videos/01_plane.png" width="100%"
+            alt=" User instruction: Pick up the paper airplane. 
 [sep]'''
 Estimated characteristics:
 m: 5.0g
@@ -592,7 +424,7 @@ print(k)
 <div class="row border rounded" style="padding-top:10px; padding-bottom:10px;">
     <div class="col-md-6">
         <video width="100%" height="100%" id="demo-video" autoplay loop muted webkit-playsinline playsinline onclick="setAttribute('controls', 'true');">
-            <source id="expandedImg" src="videos/placeholder.mp4" type="video/mp4">
+            <source id="expandedImg" src="videos/DeliGrasp.mp4" type="video/mp4">
         </video>
 
     </div>
@@ -749,15 +581,131 @@ print(k)
                 </div>
                 
             </div>
-            <div class="col-2"></div>
+            <div class="col-md-1"></div>
         </div>
 
-        <br>
+        
+
         <div class="row">
             <div class="col-2"></div>
             <div class="col-md-8">
+                <h3>
+                    Abstract
+                </h3>
                 <p class="text-justify">
-                    We also compare our method against 3 baselines: 1) a direct estimation baseline
+                    Large language models (LLMs) can provide rich
+                    physical descriptions of most worldly objects, allowing robots
+                    to achieve more informed and capable grasping. We leverage
+                    LLMs' common sense physical reasoning and code-writing
+                    abilities to infer an object's physical characteristics—mass m,
+                    friction coefficient µ, and spring constant k—from a semantic
+                    description, and then translate those characteristics into an
+                    executable adaptive grasp policy. Using a current-controllable,
+                    two-finger gripper with a built-in depth camera, we demonstrate that LLM-generated, physically-grounded grasp policies
+                    outperform traditional grasp policies on a custom benchmark of
+                    12 delicate and deformable items including food, produce, toys,
+                    and other everyday items, spanning two orders of magnitude
+                    in mass and required pick-up force. We also demonstrate how
+                    compliance feedback from DeliGrasp policies can aid in downstream tasks such as measuring produce ripeness.
+                </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <h3>
+                    Approach Overview
+                </h3>
+                <p style="text-align:center;">
+                    <image src="img/dg_overview.png" class="img-responsive">
+                </p>
+                <p class="text-justify">
+                    Large language models (LLMs) are able to supervise robot
+                    control in manipulation across high-level step-by-step
+                    task planning, low-level motion planning, and determining 
+                    grasp positions conditioned on a given object's 
+                    semantic properties. These methods inherently assume that the acts of “picking”
+                    and “placing” are straightforward tasks, and cannot acount for
+                    contact-rich manipulation tasks, such as
+                    grasping a paper airplane, deformable plastic
+                    bags dry noodles, or ripe produce. <br><br>
+                    In this work, we propose DeliGrasp, which leverages LLMs' to manipulation skills
+                    for these kinds of delicate and deformable objects. Our system 
+                    common-sense physical reasoning 
+                    and code-writing abilities to infer the physical characteristics of gripper-object interactions, 
+                    including mass, spring constant, and friction. We formulate an adaptive grasp controller
+                    with slip detection derived from the inferred characteristics,
+                    endowing LLMs embodied with any current-controllable
+                    gripper with adaptive, open-world grasp skills for objects
+                    spanning a range of weight, size, fragility, and compliance.
+                </p>
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <h3>
+                    Adaptive Grasp Policies
+                </h3>
+                <p style="text-align:center;">
+                    <image src="img/fbd.png" class="img-responsive w-50">
+                </p>
+                <p class="text-justify">
+                    The minimum grasp force required to pick an object up is
+                    bounded between object slip acceleration and gripper upwards acceleration (2.5 m/s<sup>2</sup> for the UR5 robot arm), 
+                    given an object's mass, m, and friction coefficient, µ.
+                    <p style="text-align:center;">
+                        <image src="img/bounds.png" class="img-responsive w-50">
+                    </p>
+
+                    Assuming a highly capable reasoning agent can estimate these two values,
+                    we can define a closed-loop controller to achieve a minimally-deforming grasp:
+                    increasing gripper output force F<sub>out</sub> and decreasing gripper
+                    aperture <i>x</i> until sensing a contact force F<sub>c</sub> greater than
+                    the target F<sub>min</sub>. To determine the gain terms, ∆F<sub>out</sub>
+                    and ∆<i>x</i>, i.e. how fast we close the gripper and ratchet up
+                    force, the controller utilizes an agent-determined k and ∆x to
+                    compute ∆F<sub>out</sub> = <i>c</i> · <i>k</i>∆<i>x</i> (manual dampening
+                    constant <i>c</i> = 0.1).
+                </p>
+
+
+
+                <p class="text-justify">
+                    We task an LLM (GPT-4) with predicting these quantities for an arbitrary object. 
+                    To generate grasp policies, we leverage a
+                    dual-prompt structure similar to that of Language to Rewards, 
+                    with an initial grasp “descriptor” prompt which estimates
+                    object characteristics and special accommodations, if needed, from
+                    the input object description. The “descriptor” prompt produces a 
+                    structured description, which the subsequent “coder”
+                    prompt translates into an executable Python grasp policy that
+                    modulates gripper compliance, force, and aperture according
+                    to Alg. 1. 
+                </p>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+
+        <div class="row" id="demo">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 col-xs-12">
+                <h3>
+                    Results
+                </h3>
+                <p>
+                <p class="text-justify">
+We test <span class="dprogprompt">DeliGrasp</span> on a UR5 robot
+arm and a MAGPIE gripper looking top-down on a table
+with a palm-integrated Intel RealSense D-405 camera against
+a dataset of 12 delicate and deformable objects. 
+
+                    We compare our method against 3 baselines: 1) a direct estimation baseline
                     in which <span class="dprogprompt">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain
                     2) a perception-informed baseline, where the gripper closes to an visually-determined object device-width
                     3) a traditional force-limited baseline, where the gripper closes until it cannot output any more force (set to 4 N)
@@ -858,6 +806,8 @@ print(k)
                             </div>      
                         </div>
                       </div>
+
+                      
                 </p>
             </div>
             <div class="col-md-2"></div>
@@ -993,3 +943,68 @@ print(k)
 
 </script>
 </html>
+
+
+<!-- 
+cutting this cursed carousel
+                  </p> <p><b>
+                    That's not really a robot at all, is it? I smell something real avian going on.
+                </b></p>  <p>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="collapsible">Click for the truth (REAL).</button>
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col text-center">
+    <section class="hero is-light has-background-light is-small">
+        <div class="hero-body car_color">
+            <div class="container has-text-centered">
+            <div id="results-carousel" class="carousel results-carousel">
+                <div class="item item-steve">
+                <h4 class="title is-3">Pick up the avocado</h4>
+                <video width="50%" height="50%" poster="" id="steve" autoplay muted loop playsinline>
+                    <source src="videos/10_avocado.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-coffee">
+                <h4 class="title is-3">Pick up a raspberry</h4>
+                <video width="50%" height="50%" poster="" id="coffee" autoplay muted loop playsinline>
+                    <source src="videos/04_raspberry.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-blueshirt">
+                <h4 class="title is-3">Pick up an egg.</h4>
+                <video width="50%" height="50%" poster="" id="blueshirt" autoplay muted loop playsinline>
+                    <source src="videos/4fun/egg.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a potato chip.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                    <source src="videos/4fun/chip.mp4"
+                            type="video/mp4">
+                </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a pastry.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                        <source src="videos/4fun/pastry.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+                <div class="item item-mask">
+                <h4 class="title is-3">Pick up a paper airplane.</h4>
+                <video width="50%" height="50%" poster="" id="mask" autoplay muted loop playsinline>
+                        <source src="videos/01_plane.mp4"
+                                type="video/mp4">
+                    </video>
+                </div>
+            </div>
+            </div>
+        </div>  
+    </section>
+  
+ -->
