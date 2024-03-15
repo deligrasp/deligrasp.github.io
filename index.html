@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
+
+    <meta name="description" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <base href="/"> -->
+
+    <meta property="og:image" content="https://deligrasp.github.io/img/dg_teaser.png">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="682">
+    <meta property="og:image:height" content="682">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://deligrasp.github.io/"/>
+    <meta property="og:title" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies" />
+    <meta property="og:description" content="Project page for DeliGrasp." />
+
+    <!--TWITTER-->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies" />
+    <meta name="twitter:description" content="Project page for DeliGrasp." />
+    <meta name="twitter:image" content="https://deligrasp.github.io/img/dg_teaser.png" />
+
+<!-- progprompt -->
+<script>
+    function updateSingleVideo() {
+      var demo = document.getElementById("single-menu-demos").value;
+      var task = document.getElementById("single-menu-tasks").value;
+      var inst = document.getElementById("single-menu-instances").value;
+
+      console.log("single", demo, task, inst)
+
+      var video = document.getElementById("multi-task-result-video");
+      video.src = "media/results/sim_rollouts/" + 
+                  "n" +
+                  demo +
+                  "-" +
+                  task +
+                  "-" +
+                  inst +
+                  ".mp4"
+      video.playbackRate = 1.75;
+      video.play();
+    }
+
+    function updateQpredVideo() {
+      var task = document.getElementById("single-menu-qpred").value;
+
+      console.log("qpred", task)
+
+      var video = document.getElementById("q-pred-video");
+      video.src = "media/results/qpred/" + 
+                  task + 
+                  ".mp4"
+      video.playbackRate = 1.75;
+      video.play();
+    }
+
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+  <!-- <link rel="stylesheet" href="./static/css/bulma.min.css"> -->
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+<!--  -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+  
+    <script src="js/app.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-TKNZC2XQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'GTM-TKNZC2XQ');
+    </script>
+
+    <style>
+        .nav-pills {
+            position: relative;
+            display: inline;
+        }
+
+        .imtip {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body onload="updateSingleVideo(); updateQpredVideo();">
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <strong> <font size="+4">DeliGrasp: </font> </strong>
+                <strong>
+                    <font size="+4">Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies</font>
+                </strong>
+                <!--<small>
+                    CoRL 2021
+                </small>-->
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <br>
+                    <li>William Xie <span class="icon">
+                        <a href="mailto:wixi6454@colorado.edu"><i class="fa fa-envelope"></i></a>,
+                      </span></li>
+                    <li>Jensen Lavering</li>
+                    <li>Nikolaus Correll</li>
+                    <!-- <a href="https://www.deepmind.com/">
+                        <image src="img/google-deepmind-logo.png" height="37px">
+                    </a> -->
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">                
+                <strong>University of Colorado at Boulder</strong>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 text-center">                
+                <a href="mailto:wixi6454@colorado.edu"><i class="fa fa-envelope"></i></a> Corresponding Author
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-md-1 text-center px-0">
+                <a href="assets/dg.pdf">
+                    <image src="img/paper_preview.png" height="60px">
+                        <h4><strong>Paper</strong></h4>
+                </a>
+            </div>
+            <div class="col-md-1 text-center px-0">
+                <a href="https://arxiv.org/abs/2403.07832">
+                    <image src="img/arxiv_icon.png" height="60px">
+                        <h4><strong>arXiv</strong></h4>
+                </a>
+            </div>
+            <div class="col-md-1 text-center px-0">
+                <a href="https://youtu.be/7KiKg0rdSSQ">
+                    <image src="img/youtube_icon.png" height="60px">
+                        <h4><strong>Video</strong></h4>
+                </a>
+            </div>
+            <div class="col-md-1 text-center px-0">
+                <a href="https://github.com/correlllab/MAGPIE/tree/open-grasp">
+                    <image src="img/github.png" height="60px">
+                        <h4><strong>Code</strong></h4>
+                    </a>
+            </div>
+            <div class="col-4"></div>
+
+        </div>   
+
+        <section class="hero is-light has-background-light is-small car_color">
+            <div class="hero-body car_color">
+                <div class="container has-text-centered">
+                <div id="results-carousel" class="carousel results-carousel">
+                    <div class="item item-steve">
+                    <h4 class="title is-6">Pick up the avocado</h4>
+                    <video poster="" id="steve" autoplay muted loop playsinline height="50%">
+                        <source src="videos/10_avocado.mp4"
+                                type="video/mp4" height="20%">
+                    </video>
+                    </div>
+                    <div class="item item-coffee">
+                    <h4 class="title is-6">Sort fruits in the plate and bottle in the box</h4>
+                    <video poster="" id="coffee" autoplay muted loop playsinline height="50%">
+                        <source src="videos/10_avocado.mp4"
+                                type="video/mp4">
+                    </video>
+                    </div>
+                    <div class="item item-blueshirt">
+                    <h4 class="title is-6">Put salmon in the fridge</h4>
+                    <video poster="" id="blueshirt" autoplay muted loop playsinline height="50%">
+                        <source src="videos/10_avocado.mp4"
+                                type="video/mp4">
+                    </video>
+                    </div>
+                    <div class="item item-mask">
+                    <h4 class="title is-6">Throw away apple</h4>
+                    <video poster="" id="mask" autoplay muted loop playsinline height="50%">
+                        <source src="videos/10_avocado.mp4"
+                                type="video/mp4">
+                    </video>
+                    </div>
+                </div>
+                </div>
+            </div>  
+        </section>
+<!-- coming soon
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Video
+                </h3>
+                <div class="text-center">
+                    <div style="position:relative;padding-top:56.25%;">
+                        <iframe width="600" height="300" src="coming soon"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+ -->
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">
+                    Large language models (LLMs) can provide rich
+                    physical descriptions of most worldly objects, allowing robots
+                    to achieve more informed and capable grasping. We leverage
+                    LLMs' common sense physical reasoning and code-writing
+                    abilities to infer an object's physical characteristics—mass m,
+                    friction coefficient µ, and spring constant k—from a semantic
+                    description, and then translate those characteristics into an
+                    executable adaptive grasp policy. Using a current-controllable,
+                    two-finger gripper with a built-in depth camera, we demonstrate that LLM-generated, physically-grounded grasp policies
+                    outperform traditional grasp policies on a custom benchmark of
+                    12 delicate and deformable items including food, produce, toys,
+                    and other everyday items, spanning two orders of magnitude
+                    in mass and required pick-up force. We also demonstrate how
+                    compliance feedback from DeliGrasp policies can aid in downstream tasks such as measuring produce ripeness.
+                </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <br>
+                <h3>
+                    Approach Overview
+                </h3>
+                <p style="text-align:center;">
+                    <image src="img/dg_overview.png" class="img-responsive">
+                </p>
+                <p class="text-justify">
+                    Large language models (LLMs) are able to supervise robot
+                    control in manipulation across high-level step-by-step
+                    task planning, low-level motion planning, and determining 
+                    grasp positions conditioned on a given object's 
+                    semantic properties. These methods inherently assume that the acts of “picking”
+                    and “placing” are straightforward tasks, and cannot acount for
+                    contact-rich manipulation tasks, such as
+                    grasping a paper airplane, deformable plastic
+                    bags dry noodles, or ripe produce. <br>
+                    In this work, we propose DeliGrasp, which leverages LLMs' to manipulation skills
+                    for these kinds of delicate and deformable objects. Our system 
+                    common-sense physical reasoning 
+                    and code-writing abilities to infer the physical characteristics of gripper-object interactions, 
+                    including mass, spring constant, and friction. We formulate an adaptive grasp controller
+                    with slip detection derived from the inferred characteristics,
+                    endowing LLMs embodied with any current-controllable
+                    gripper with adaptive, open-world grasp skills for objects
+                    spanning a range of weight, size, fragility, and compliance.
+                </p>
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <h3>
+                    Adaptive Grasping with Slip Detection
+                </h3>
+                <p style="text-align:center;">
+                    <image src="img/fbd.png" class="img-responsive w-50">
+                </p>
+                <p class="text-justify">
+                    We build the Reward Translator based on LLMs to map user interactions to reward functions
+                    corresponding to the desired robot motion.
+                    As reward tuning is highly domain-specific and requires expert knowledge, it is unsurprising that
+                    LLMs trained on generic language datasets
+                    cannot directly generate a reward for a specific hardware. Instead, we explore the in-context
+                    learning ability of LLMs to achieve this goal.
+                    <br>
+                    More concretely, we decompose the problem of language to reward into two stages: motion description
+                    and reward coding. During motion description stage,
+                    we design a prompt to instruct an LLM to interpret and expand the user input into a natural language
+                    description of the desired robot motion following a pre-defined template.
+                    While during the reward coding stage, we use another prompt to instruct the LLM to translate the
+                    motion description into reward specifying code.
+                </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Generating Grasp Policies
+                </h3>
+
+                <p class="text-justify">
+                    The Motion Controller needs to map the reward function generated by the Reward Translatorto
+                    low-level robot actions that maximize the accumulated reward specified by the Reward Translator.
+                    There are a few possible ways to achieve this, including using reinforcement learning (RL), offline
+                    trajectory optimization, or, as in this work, receding horizon trajectory optimization, i.e., model
+                    predictive control (MPC).
+                    Specifically, we use an open-source implementation based on the MuJoCo simulator, MJPC.
+                    At each control step, MJPC plans a sequence of optimized actions and sends to the robot. The robot
+                    applies the action corresponding to its current timestamp, advances to the next step, and sends the
+                    updated robot states to the MJPC planner to initiate the next planning cycle.
+                    The frequent re-planning in MPC empowers its robustness to uncertainties in the system and,
+                    importantly, enables interactive motion synthesis and correction.
+                </p>
+            </div>
+        </div>
+
+        <div class="row" id="demo">
+            <div class="col-md-2"></div>
+            <div class="col-md-8 col-xs-12">
+                <h3>
+                    Results
+                </h3>
+                <p>
+                <p class="text-justify">
+                    We evaluate our approach on two simulated robotic systems: a quadruped robot, and a dexterous robot
+                    manipulator.
+                    We design a diverse set of tasks for each robot to demonstrate the capability of our proposed
+                    system. Some examples of the resulting
+                    robot motions can be found below.
+                </p>
+                </p>
+                <br>
+                <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/01_plane.png" width="100%"
+                            alt=" User instruction: Pick up the paper airplane. 
+[sep]'''
+Estimated characteristics:
+m: 5.0g
+µ: 0.5
+k: 20.0 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 30.0
+initial_force = slip_threshold = 0.098 
+additional_closure = 2.0
+additional_force_increase = 0.01
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+
+## k: 184.9 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/02_empty-cup.png" width="100%"
+                            alt="User instruction: Pick up the empty paper cup.
+[sep]'''
+Estimated characteristics:
+m: 10g
+µ: 0.4
+k: 50.0 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 75.0
+initial_force = slip_threshold = 0.025
+additional_closure = 5.0
+additional_force_increase = 0.025
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 389.8 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/03_yuba.png" width="100%"
+                            alt="User instruction: Pick up the yuba (dried tofu skin).
+[sep]'''
+Estimated characteristics:
+m: 20g
+µ: 0.5
+k: 200 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 25.0
+initial_force = slip_threshold = 0.025
+additional_closure = 2.0
+additional_force_increase = 0.04
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 157.7 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/04_raspberry.png" width="100%"
+                            alt=" User instruction: Pick up the raspberry. 
+[sep]'''
+Estimated characteristics:
+m: 5.0g
+µ: 0.8
+k: 50.0 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 18.0
+initial_force = slip_threshold = 0.0625
+additional_closure = 1.0
+additional_force_increase = 0.01
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 61.0 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/05_taco.png" width="100%" 
+                            alt="User instruction: Pick up the hard-shell tortilla.
+[sep]'''
+Estimated characteristics:
+m: 50g
+µ: 0.5
+k: 1000 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 65.0
+initial_force = slip_threshold = 0.98
+additional_closure = 2.0
+additional_force_increase = 0.2
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 188.4 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/06_mandarin.png" width="100%"
+                            alt="User instruction: Pick up the mandarin.
+[sep]'''
+Estimated characteristics:
+m: 150g
+µ: 0.8
+k: 500 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 50.0
+initial_force = slip_threshold = 1.88
+additional_closure = 2.0
+additional_force_increase = 0.1
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 151.8 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                </div>
+
+                <p></p>
+
+<div class="row border rounded" style="padding-top:10px; padding-bottom:10px;">
+    <div class="col-md-6">
+        <video width="100%" height="100%" id="demo-video" autoplay loop muted webkit-playsinline playsinline onclick="setAttribute('controls', 'true');">
+            <source id="expandedImg" src="videos/placeholder.mp4" type="video/mp4">
+        </video>
+
+    </div>
+    <div class="col-md-6">
+        <div id="imgtext">Prompt text in gray.</div>
+        <div>
+            <pre><code class="language-python" id="answer">DG policy shown within code block.</code></pre>
+        </div>
+    </div>
+</div>
+                <p></p>
+                <div class="row">
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/07_stuffed_animal.png" width="100%"
+                            alt=" User instruction: Pick up the tail of the stuffed animal.
+[sep]'''
+Estimated characteristics:
+m: 50g
+µ: 0.8
+k: 100 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 25.0
+initial_force = slip_threshold = 0.61
+additional_closure = 2.0
+additional_force_increase = 0.05
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 192.8 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/08_water_cup.png" width="100%" 
+alt="User instruction: Pick up a paper cup filled with water.
+[sep]'''
+Estimated characteristics:
+m: 250g
+µ: 0.6
+k: 200 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 75.0
+initial_force = slip_threshold = 4.08
+additional_closure = 2.0
+additional_force_increase = 0.4
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 373.2 N/m" onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/09_noodles.png" width="100%" 
+                        alt="User instruction: Pick up a plastic bag containing noodles.
+[sep]'''
+Estimated characteristics:
+m: 500g
+µ: 0.4
+k: 300 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 90.0
+initial_force = slip_threshold = 12.3
+additional_closure = 5.0
+additional_force_increase = 0.15
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 4324. N/m" 
+                        onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/10_avocado.png" width="100%"
+                            alt=" User instruction: Pick up the avocado. 
+[sep]'''
+Estimated characteristics:
+m: 200g
+µ: 0.5
+k: 500 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 60.0
+initial_force = slip_threshold = 3.92
+additional_closure = 2.0
+additional_force_increase = 1.0
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 298.7 N/m"
+                            onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/11_spray.png" width="100%" 
+alt="User instruction: Pick up a plastic bottle containing water.
+[sep]'''
+Estimated characteristics:
+m: 500g
+µ: 0.4
+k: 150 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 48.0
+initial_force = slip_threshold = 12.2
+additional_closure = 2.0
+additional_force_increase = 0.03
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 1383. N/m" onclick="populateDemo(this);">
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2 px-1">
+                        <img src="videos/12_rice.png" width="100%" 
+                        alt="User instruction: Pick up a plastic bag containing rice.
+[sep]'''
+Estimated characteristics:
+m: 1000g
+µ: 0.5
+k: 200 N/m
+'''
+
+from magpie.gripper import Gripper
+G = Gripper()
+G.reset_parameters()
+
+goal_aperture = 80.0
+initial_force = slip_threshold = 19.6
+additional_closure = 5.0
+additional_force_increase = 1.0
+k = G.grasp(goal_aperture, slip_threshold, additional_closure, additional_force_increase)
+
+print(k)
+## k: 6192. N/m" onclick="populateDemo(this);">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8">
+                <p class="text-justify">
+                    We further compare our method against two baselines: 1) a Reward Coder only baseline
+                    where an LLM directly map user instructions to reward code instead of going through the Motion
+                    Descriptor, and 2) a Code-as-Policies baseline
+                    where the LLM generates a plan for the robot motion using a set of pre-defined robot primitive
+                    skills instead of reward functions.
+                    For the Code-as-Policies (CaP) baseline, we design the primitive skills based on common commands
+                    available to the robot.
+                    <br>
+                    As shown below, our proposed approach achieves notably higher success rate for 11/17 task
+                    categories and comparable performance for the rest tasks,
+                    showing the effectiveness and reliability of the proposed method.
+                </p>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-md-8 text-center px-0">
+                    <image width="100%" src="img/deli_data.png" class="img-responsive">
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <p class="text-justify">
+                    We further showcase two examples where we teach the robot to perform complex tasks through
+                    multiple rounds of interactions.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                      Prompts
+                  </h3>
+                <p class="text-justify">
+                    Deligrasp: 
+                    <a href="./assets/prompts/dg_descriptor.txt">Grasp Descriptor</a> |
+                    <a href="./assets/prompts/dg_coder.txt">Grasp Coder</a>
+                </p>
+            </div>
+          </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    BibTeX Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <textarea id="bibtex" class="form-control" readonly style="height: 175px;">
+@article{xie2024deligrasp,
+    title={DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies}, 
+    author={William Xie and Jensen Lavering and Nikolaus Correll},
+    year={2024},
+    jounral={Arxiv preprint arXiv: 2403.07832},
+} </textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    The authors would like to thank Eric Xue, Enora Rice, Shivendra Agrawal, and James Watson for their feedback and support. <br><br>
+                    The website template was borrowed from <a href="https://language-to-reward.github.io/">Language to Rewards</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    timeoutIds = [];
+
+    function populateDemo(imgs) {
+        // Get the expanded image
+        var expandImg = document.getElementById("expandedImg");
+        // Get the image text
+        var imgText = document.getElementById("imgtext");
+        var answer = document.getElementById("answer");
+
+        // Use the same src in the expanded image as the image being clicked on from the grid
+        expandImg.src = imgs.src.replace(".png", ".mp4");
+        var video = document.getElementById('demo-video');
+        // or video = $('.video-selector')[0];
+        video.pause()
+        video.load();
+        video.play();
+        video.removeAttribute('controls');
+        
+        console.log(expandImg.src);
+        // Use the value of the alt attribute of the clickable image as text inside the expanded image
+        var qa = imgs.alt.split("[sep]");
+        imgText.innerHTML = qa[0];
+        answer.innerHTML = "";
+        // Show the container element (hidden with CSS)
+        expandImg.parentElement.style.display = "block";
+        for (timeoutId of timeoutIds) {
+            clearTimeout(timeoutId);
+        }
+        typeWriter(qa[1], 0, qa[0]);
+    }
+
+    // function typeWriter(div, txt, i, q) {
+    function typeWriter(txt, i, q) {
+        var imgText = document.getElementById("imgtext");
+        if (imgText.innerHTML == q) {
+            if (i < txt.length) {
+                if (txt.charAt(i) == "\\") {
+                    answer.innerHTML += "\n";
+                    // div.innerHTML += "\n";
+                    i += 1;
+                } else {
+                    answer.innerHTML += txt.charAt(i);
+                    // div.innerHTML += txt.charAt(i);
+                }
+                i++;
+                timeoutIds.push(setTimeout(typeWriter, 5, txt, i, q));
+            }
+            else {
+                hljs.highlightAll();
+            }
+        }
+        i = 0
+    }
+
+    var myCarousel = document.querySelector('#myCarousel')
+    var carousel = new bootstrap.Carousel(myCarousel, {interval: 500, wrap: true})
+    var slides = document.querySelectorAll('.carousel .carousel-item')
+
+    slides.forEach((el) => {
+        // number of slides per carousel-item
+        const minPerSlide = slides.length
+        let next = el.nextElementSibling
+        for (var i=1; i<minPerSlide; i++) {
+            if (!next) {
+                // wrap carousel by using first child
+                next = slides[0]
+            }
+            let cloneChild = next.cloneNode(true)
+            el.appendChild(cloneChild.children[0])
+            next = next.nextElementSibling
+        }
+})
+
+</script>
+
+</html>
