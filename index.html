@@ -748,28 +748,28 @@ a dataset of 12 delicate and deformable objects.
     <div class="hero-body car_color">
         <div class="container has-text-centered">
         <div id="results-carousel" class="carousel results-carousel">
+
+            <div class="item item-mask">
+                <h4 class="title is-3">Semantic Segmentation</h4>
+                    <img src="img/sem_seg.png" width="50%" alt="User instruction: Pick up the paper airplane." onclick="populateDemo(this);">
+            </div>           
+            
+            <div class="item item-coffee">
+            <h4 class="title is-3">Grasp Policies</h4>
+
+            </div>
+
             <div class="item item-steve">
-            <h4 class="title is-3">Measure <i>k</i><sub>1</sub></h4>
-            <video width="50%" height="50%" poster="" id="steve" autoplay muted loop playsinline>
-                <source src="videos/ripeness/k1.mp4"
-                        type="video/mp4">
-            </video>
+                <h4 class="title is-3">Measuring <i>k</i></h4>
+                <video width="50%" height="50%" poster="" id="steve" autoplay muted loop playsinline>
+                    <source src="videos/ripeness/stacked.mp4"
+                            type="video/mp4">
+                </video>
             </div>
 
             <div class="item item-coffee">
-            <h4 class="title is-3">Measure <i>k</i><sub>2</sub></h4>
-            <video width="50%" height="50%" poster="" id="coffee" autoplay muted loop playsinline>
-            <source src="videos/ripeness/k2.mp4"
-                    type="video/mp4">
-            </video>
-            </div>
-
-            <div class="item item-coffee">
-            <h4 class="title is-3">Measure <i>k</i><sub>3</sub></h4>
-            <video width="50%" height="50%" poster="" id="coffee" autoplay muted loop playsinline>
-            <source src="videos/ripeness/k3.mp4"
-                    type="video/mp4">
-            </video>
+                <h4 class="title is-3">LLM Ripeness Reasoning</h4>
+    
             </div>
 
             <div class="item item-coffee">
@@ -780,15 +780,6 @@ a dataset of 12 delicate and deformable objects.
                 </video>
             </div>
 
-            <div class="item item-mask">
-            <h4 class="title is-3">Pick up a paper airplane.</h4>
-                <img src="img/placeholder.png" width="50%" alt="User instruction: Pick up the paper airplane." onclick="populateDemo(this);">
-            </div>
-
-            <div class="item item-mask">
-            <h4 class="title is-3">Pick up a paper airplane.</h4>
-                <img src="img/placeholder.png" width="50%" alt="User instruction: Pick up the paper airplane." onclick="populateDemo(this);">
-            </div>
         </div>
         </div>
     </div>  
