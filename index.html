@@ -9,7 +9,7 @@
     <title>DeliGrasp: Inferring Object Properties with LLMs for Adaptive Grasp Policies</title>
     <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
 
-    <meta name="description" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies">
+    <meta name="description" content="DeliGrasp: Inferring Object Properties with LLMs for Adaptive Grasp Policies">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- <base href="/"> -->
@@ -20,12 +20,12 @@
     <meta property="og:image:height" content="682">
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://deligrasp.github.io/"/>
-    <meta property="og:title" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies" />
+    <meta property="og:title" content="DeliGrasp: Inferring Object Properties with LLMs for Adaptive Grasp Policies" />
     <meta property="og:description" content="Project page for DeliGrasp." />
 
     <!--TWITTER-->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="DeliGrasp: Inferring Object Mass, Friction, and Compliance with LLMs for Adaptive and Minimally Deforming Grasp Policies" />
+    <meta name="twitter:title" content="DeliGrasp: Inferring Object Properties with LLMs for Adaptive Grasp Policies" />
     <meta name="twitter:description" content="Project page for DeliGrasp." />
     <meta name="twitter:image" content="https://deligrasp.github.io/img/dg_teaser.png" />
 
@@ -608,7 +608,7 @@ print(k)
                     12 delicate and deformable items including food, produce, toys,
                     and other everyday items, spanning two orders of magnitude
                     in mass and required pick-up force. We also demonstrate how
-                    compliance feedback from DeliGrasp policies can aid in downstream tasks such as measuring produce ripeness.
+                    compliance feedback from <span class="dg">DeliGrasp</span> policies can aid in downstream tasks such as measuring produce ripeness.
                 </p>
             </div>
             <div class="col-2"></div>
@@ -633,7 +633,7 @@ print(k)
                     contact-rich manipulation tasks, such as
                     grasping a paper airplane, deformable plastic
                     bags dry noodles, or ripe produce. <br><br>
-                    In this work, we propose DeliGrasp, which leverages LLMs' to manipulation skills
+                    In this work, we propose <span class="dg">DeliGrasp</span>, which leverages LLMs' to manipulation skills
                     for these kinds of delicate and deformable objects. Our system 
                     common-sense physical reasoning 
                     and code-writing abilities to infer the physical characteristics of gripper-object interactions, 
@@ -702,19 +702,19 @@ print(k)
                 </h3>
                 <p>
                 <p class="text-justify">
-We test <span class="dprogprompt">DeliGrasp</span> on a UR5 robot
+We test <span class="dg">DeliGrasp</span> on a UR5 robot
 arm and a MAGPIE gripper looking top-down on a table
 with a palm-integrated Intel RealSense D-405 camera against
 a dataset of 12 delicate and deformable objects. 
 
                     We compare our method against 3 baselines: 1) a direct estimation baseline
-                    in which <span class="dprogprompt">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain
+                    in which <span class="dg">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain
                     2) a perception-informed baseline, where the gripper closes to an visually-determined object device-width
                     3) a traditional force-limited baseline, where the gripper closes until it cannot output any more force (set to 4 N)
                     <br>
                     <br>
-                    As shown below, <span class="dprogprompt">DeliGrasp</span> outperforms the baselines on 8/12 objects. 
-                    Where force-limited grasps deform objects, and visually-informed grasps slip, <span class="dprogprompt">DeliGrasp</span> 
+                    As shown below, <span class="dg">DeliGrasp</span> outperforms the baselines on 8/12 objects. 
+                    Where force-limited grasps deform objects, and visually-informed grasps slip, <span class="dg">DeliGrasp</span> 
                     is successfully picks up objects with minimal deformation. While the direct estimation baseline is closer in performance, 
                     we observe higher volatility in estimated parameters, due to a lack 
                     of common-sense physical grounding, and thus, lower reliability and interpretability.
@@ -737,8 +737,46 @@ a dataset of 12 delicate and deformable objects.
             <div class="col-md-8">
 
                 <p class="text-justify">
-                    We also show how the compliance feedback from <span class="dprogprompt">DeliGrasp</span> 
-                    policies enables downstream tasks such as measuring produce ripeness.
+                    <br>
+                    <span class="dg">DeliGrasp</span> failures are primarily slip failures, as the simple controller is not robust to non-linearly and/or highly compliant objects such
+                    as the bag of noodles, bag of rice, spray bottle, and stuffed animal. Deforming failures did not occur, despite occasional mass overestimations,
+                    because the applied force goalpoint, F<sub>min</sub>, is set to the estimated object's slip force rather than its maximum force. We show some of these failures below.
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="collapsible">Noodles, rice, bottle, stuffed animal.</button>
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-3 text-center px-1">
+                                        <video width="75%" height="75%"  autoplay muted loop playsinline>
+                                            <source src="videos/fail/noodle_fail.mp4" type="video/mp4">
+                                        </video>
+                                    </div>      
+                                    <div class="col-3 text-center px-1">
+                                        <video width="75%" height="75%"  autoplay muted loop playsinline>
+                                            <source src="videos/12_rice.mp4" type="video/mp4">
+                                        </video>
+                                    </div>       
+                                    <div class="col-3 text-center px-1">
+                                        <video width="75%" height="75%"  autoplay muted loop playsinline>
+                                            <source src="videos/fail/spray_fail.mp4" type="video/mp4">
+                                        </video>
+                                    </div>      
+                                    <div class="col-3 text-center px-1">
+                                        <video width="75%" height="75%"  autoplay muted loop playsinline>
+                                            <source src="videos/fail/stuffed_animal_fail.mp4" type="video/mp4">
+                                        </video>
+                                    </div>      
+                                </div>
+                            </div>      
+                        </div>
+                      </div>     
+<br>
+                    We also show how the compliance feedback from <span class="dg">DeliGrasp</span> 
+                    policies enables downstream tasks such as measuring produce ripeness. In the below sequence, we
+                    show how <span class="dg">DeliGrasp</span> performs semantic segmentation on a bin of avocados, generates different grasp policies for 
+                    different actions "checking for ripeness" vs. "picking up", and uses the measured compliance to pick
+                    an appropriate avocado for "guacamole today".
+
                 </p>
             </div>
             <div class="col-md-2"></div>
@@ -753,12 +791,22 @@ a dataset of 12 delicate and deformable objects.
 
             <div class="item item-mask">
                 <h4 class="title is-3">Semantic Segmentation</h4>
-                    <img src="img/sem_seg.png" width="50%" alt="User instruction: Pick up the paper airplane." onclick="populateDemo(this);">
+                    <img src="img/sem_seg.png" width="44%" height="40%" alt="User instruction: Pick up the paper airplane." onclick="populateDemo(this);">
             </div>           
             
-            <div class="item item-coffee">
-            <h4 class="title is-3">Grasp Policies</h4>
+            <div class="item">
+            <h4 class="title is-3"><span class="dg">DeliGrasp</span> Policies</h4>
+                <div class="has-text-justified">
+                    <pre><code class="python"> ''' Estimated characteristics:
+m: 200g
+µ: 0.5
+k: 500 N/m
+F_min:  3.92 N
 
+This grasp sets the initial force to a different initial force 0.5 Newton because of requiring gentle pressing to assess ripeness without causing indentations.
+'''
+                        </code></pre>            
+                </div>
             </div>
 
             <div class="item item-steve">
@@ -771,7 +819,13 @@ a dataset of 12 delicate and deformable objects.
 
             <div class="item item-coffee">
                 <h4 class="title is-3">LLM Ripeness Reasoning</h4>
-    
+                <div class="has-text-justified">
+                <pre><code class="python">''' User: Given this image of avocados and their corresponding spring constants, pick out the best avocado for guacamole today.'''
+                    
+''' GPT-4V: Unfortunately, the image has a resolution that does not allow for a detailed inspection of the avocado's color. Avocado with spring constant k<sub>1</sub> would be the best choice for guacamole today as it would be the softest and most ripe of the three, which is desirable for making guacamole.'''
+                                            </code></pre>            
+                </div>
+
             </div>
 
             <div class="item item-coffee">
@@ -799,11 +853,11 @@ a dataset of 12 delicate and deformable objects.
                     <p><b>
                         How does this differ from Language to Rewards and Code as Policies?
                          </b></p>  <p>
-                        <span class="dprogprompt">DeliGrasp</span>'s primary function is the
+                        <span class="dg">DeliGrasp</span>'s primary function is the
                         estimation of object mass, friction, and compliance, and modulating the computed 
                         grasp force depending on the high-level task description. We pair it with an
                         adaptive grasping algorithm derived from traditional methods and tailored for these
-                        estimated characteristics. <span class="dprogprompt">DeliGrasp</span> parameterizes
+                        estimated characteristics. <span class="dg">DeliGrasp</span> parameterizes
                         low-level contact rich manipulation, rather than directly design low-level motion
                         with reward functions or pre-defined robot primitive skills.
                     </p>
@@ -814,12 +868,12 @@ a dataset of 12 delicate and deformable objects.
                     <ol>
                         <li> Classical methods are often customized for specific gripper hardware or suites of sensors, whereas ours can be adapted to any current-controllable end-effector. </li>
                         <li> Our algorithm is a simple closed-loop feedforward controller because it relies on LLM-estimated terms which reduce controller complexity.</li>
-                        <li> Many methods employ in-motion slip detection, which <span class="dprogprompt">DeliGrasp</span> is not capable of.</li>
+                        <li> Many methods employ in-motion slip detection, which <span class="dg">DeliGrasp</span> is not capable of.</li>
                     </ol>
                     </p>
 
                 </p> <p><b>
-                    What else can <span class="dprogprompt">DeliGrasp</span> pick up?
+                    What else can <span class="dg">DeliGrasp</span> pick up?
                 </b></p>  <p>
                     <div class="row">
                         <div class="col">
@@ -848,7 +902,7 @@ a dataset of 12 delicate and deformable objects.
                 </p>
 
                     </p> <p><b>
-                        But can <span class="dprogprompt">DeliGrasp</span> pick up deli meats?
+                        But can <span class="dg">DeliGrasp</span> pick up deli meats?
                     </b></p>  <p>
                         <div class="row">
                             <div class="col">
@@ -881,7 +935,7 @@ a dataset of 12 delicate and deformable objects.
                       Prompts
                   </h3>
                 <p class="text-justify">
-                    <span class="dprogprompt">DeliGrasp</span>: 
+                    <span class="dg">DeliGrasp</span>: 
                     <a href="./assets/prompts/dg_descriptor.txt">Grasp Descriptor</a> |
                     <a href="./assets/prompts/dg_coder.txt">Grasp Coder</a>
                 </p>
