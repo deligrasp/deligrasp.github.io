@@ -632,12 +632,12 @@ print(k)
                     and “placing” are straightforward tasks, and cannot acount for
                     contact-rich manipulation tasks, such as
                     grasping a paper airplane, deformable plastic
-                    bags dry noodles, or ripe produce. <br><br>
-                    In this work, we propose <span class="dg">DeliGrasp</span>, which leverages LLMs' to manipulation skills
-                    for these kinds of delicate and deformable objects. Our system 
+                    bags containing dry noodles, or ripe produce. <br><br>
+                    In this work, we propose <span class="dg">DeliGrasp</span>, which leverages LLMs' .
                     common-sense physical reasoning 
                     and code-writing abilities to infer the physical characteristics of gripper-object interactions, 
-                    including mass, spring constant, and friction. We formulate an adaptive grasp controller
+                    including mass, spring constant, and friction, to obtain grasp policies
+                    for these kinds of delicate and deformable objects. We formulate an adaptive grasp controller
                     with slip detection derived from the inferred characteristics,
                     endowing LLMs embodied with any current-controllable
                     gripper with adaptive, open-world grasp skills for objects
@@ -687,7 +687,7 @@ print(k)
                     structured description, which the subsequent “coder”
                     prompt translates into an executable Python grasp policy that
                     modulates gripper compliance, force, and aperture according
-                    to Alg. 1. 
+                    to the controller described above.
                 </p>
             </div>
             <div class="col-md-2"></div>
@@ -795,7 +795,7 @@ a dataset of 12 delicate and deformable objects.
             </div>           
             
             <div class="item">
-            <h4 class="title is-3"><span class="dg">DeliGrasp</span> Policies</h4>
+            <h4 class="title is-3"><span class="dg">Adjusted DeliGrasp</span> Policies</h4>
                 <div class="has-text-justified">
                     <pre><code class="python"> ''' Estimated characteristics:
 m: 200g
@@ -856,7 +856,7 @@ This grasp sets the initial force to a different initial force 0.5 Newton becaus
                         <span class="dg">DeliGrasp</span>'s primary function is the
                         estimation of object mass, friction, and compliance, and modulating the computed 
                         grasp force depending on the high-level task description. We pair it with an
-                        adaptive grasping algorithm derived from traditional methods and tailored for these
+                        adaptive grasping algorithm derived from traditional adaptive grasp controllers and tailored for these
                         estimated characteristics. <span class="dg">DeliGrasp</span> parameterizes
                         low-level contact rich manipulation, rather than directly design low-level motion
                         with reward functions or pre-defined robot primitive skills.
