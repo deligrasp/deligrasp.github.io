@@ -595,12 +595,18 @@ print(k)
                     abilities to infer an object's physical characteristics—mass m,
                     friction coefficient µ, and spring constant k—from a semantic
                     description, and then translate those characteristics into an
-                    executable adaptive grasp policy. Using a current-controllable,
-                    two-finger gripper with a built-in depth camera, we demonstrate that LLM-generated, physically-grounded grasp policies
-                    outperform traditional grasp policies on a custom benchmark of
-                    12 delicate and deformable items including food, produce, toys,
-                    and other everyday items, spanning two orders of magnitude
-                    in mass and required pick-up force. We also demonstrate how
+                    executable adaptive grasp policy. Using a two-finger gripper with a 
+                    built-in depth camera that can control its torque by limiting 
+                    motor current, we demonstrate that LLM-parameterized but 
+                    first-principles grasp policies outperform both traditional 
+                    adaptive grasp policies and direct LLM-as-code policies on a custom 
+                    benchmark of 12 delicate and deformable items including food, produce, 
+                    toys, and other everyday items, spanning two orders of magnitude in 
+                    mass and required pick-up force. We then improve property estimation 
+                    and grasp performance on variable size objects with model finetuning 
+                    on property-based comparisons and eliciting such comparisons 
+                    via chain-of-thought prompting.
+                     We also demonstrate how
                     compliance feedback from <span class="dg">DeliGrasp</span> policies can aid in downstream tasks such as measuring produce ripeness.
                 </p>
             </div>
@@ -700,17 +706,31 @@ arm and a MAGPIE gripper looking top-down on a table
 with a palm-integrated Intel RealSense D-405 camera against
 a dataset of 12 delicate and deformable objects. 
 
-                    We compare our method against 3 baselines: 1) a direct estimation baseline
-                    in which <span class="dg">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain
-                    2) a perception-informed baseline, where the gripper closes to an visually-determined object device-width
-                    3) a traditional force-limited baseline, where the gripper closes until it cannot output any more force (set to 4 N)
+                    We compare our method against 5 baselines:
+                    1) in-place adaptive grasping with 2N and 10N grasp force thresholds,
+                    2) in-motion adaptive grasping with 0.5N and 1.5N initial force,
+                    3) a direct estimation baseline
+                    in which <span class="dg">DeliGrasp</span> directly estimates the parameters of the adaptive grasping algorithm, contact force, force gain, and aperture gain,
+                    4) a perception-informed baseline, where the gripper closes to an visually-determined object device-width, and
+                    5) a traditional force-limited baseline, where the gripper closes until it cannot output any more force (set to 4 N).
+                    We also include two additional <span class="dg">DeliGrasp</span> configurations: 1) with
+                    PhysObjects finetuning and 2) with PhysObjects finetuning and chain-of-thought prompting.
                     <br>
                     <br>
-                    As shown below, <span class="dg">DeliGrasp</span> outperforms the baselines on 8/12 objects. 
+                    As shown below, <span class="dg">DeliGrasp</span> performs equivalently or better than the baselines
+                    on 10/12 objects and outperforms the baselines outright on 5/12 objects. 
                     Where force-limited grasps deform objects, and visually-informed grasps slip, <span class="dg">DeliGrasp</span> 
                     is successfully picks up objects with minimal deformation. While the direct estimation baseline is closer in performance, 
                     we observe higher volatility in estimated parameters, due to a lack 
                     of common-sense physical grounding, and thus, lower reliability and interpretability.
+                    While the traditional adaptive grasping methods are more successful, particularly the "In Motion"
+                    strategy, traditional methods are not as versatile as <span class="dg">DeliGrasp</span>
+                    and are further dependent on their expert-tuned parameters for performance.
+                    "In Motion" and "In Place" strategies with lower force settings are more successful
+                    on lighter objects and the strategies with higher force settings are more successful
+                    on the heavier objects. And all traditional methods crush highly delicate and light
+                    objects like the raspberry. We conclude that it is the LLM's common
+                    sense reasoning that enables such a dynamic grasping range in object mass and stiffness.
                 </p>
             </div>
             <div class="col-2"></div>
@@ -719,7 +739,7 @@ a dataset of 12 delicate and deformable objects.
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8 text-center px-0">
-                    <image width="100%" src="img/deli_data.png" class="img-responsive">
+                    <image width="100%" src="img/deli_data_tab.png" class="img-responsive">
             </div>
             <div class="col-md-2"></div>
 
@@ -859,6 +879,7 @@ This grasp sets the initial force to a different initial force 0.5 Newton becaus
                         How does the controller compare to a classic adaptive grasping methods?
                     </b></p>  <p>
                     <ol>
+                        <li> DeliGrasp outperforms classical methods on the evaluated delicate objects. </li>
                         <li> Classical methods are often customized for specific gripper hardware or suites of sensors, whereas ours can be adapted to any current-controllable end-effector. </li>
                         <li> Our algorithm is a simple closed-loop feedforward controller because it relies on LLM-estimated terms which reduce controller complexity.</li>
                         <li> Many methods employ in-motion slip detection, which <span class="dg">DeliGrasp</span> is not capable of.</li>
